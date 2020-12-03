@@ -28,7 +28,7 @@ SEARCH_VOLUME=/볼륨을 연결할 디렉터리 경로
 LOGS_VOLUME=/볼륨을 연결할 디렉터리 경로
 ```
 
-만약, 실행 중에 **<span style="color:red">PermissionDenied</span>**, **<span style="color:red">AccessDenied</span>** 관련 에러가 발생한다면 해당 디렉터리의 **권한**을 조절해야 합니다(되도록 미리 설정해놓는 편이 좋습니다). 해당 디렉터리로 이동하여 아래 과정을 수행합니다.
+만약, 실행 중에 **PermissionDenied**, **AccessDenied** 관련 에러가 발생한다면 해당 디렉터리의 **권한**을 조절해야 합니다(되도록 미리 설정해놓는 편이 좋습니다). 해당 디렉터리로 이동하여 아래 과정을 수행합니다.
 
 ```
 $ chmod 777 볼륨을 연결할 디렉터리

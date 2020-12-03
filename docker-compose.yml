@@ -85,4 +85,4 @@ services:
 networks:
   default:
     external:
-      name: saasbot/docker
+      name: $DOCKER_BRIDGE_NETWORK
