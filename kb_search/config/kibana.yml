@@ -1,0 +1,7 @@
+server.name: kb-search-docker-vt
+server.host: 0.0.0.0
+elasticsearch.hosts: [ "http://es_search:9200" ]
+monitoring.ui.container.elasticsearch.enabled: true
+
+elasticsearch.username: elastic
+elasticsearch.password: admin@2020

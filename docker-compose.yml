@@ -1,0 +1,89 @@
+version: '3.2'
+
+services:
+  es_search:
+    build:
+      context: es_search/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./es_search/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: bind
+        source: ./es_search/config/jvm.options
+        target: /usr/share/elasticsearch/config/jvm.options
+        read_only: true
+      - type: bind
+        source: /volume/search/data
+        target: /usr/share/elasticsearch/data
+    ports:
+      - '39201:9200'
+      - '39301:9300'
+    environment:
+      ELASTIC_PASSWORD: admin@2020
+      discovery.type: single-node
+
+  kb_search:
+    build:
+      context: kb_search/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./kb_search/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - '35602:5601'
+    depends_on:
+      - es_search
+
+  es_logs:
+    build:
+      context: es_logs/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./es_logs/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: bind
+        source: ./es_logs/config/jvm.options
+        target: /usr/share/elasticsearch/config/jvm.options
+        read_only: true
+      - type: bind
+        source: /volume/logs/data
+        target: /usr/share/elasticsearch/data
+    ports:
+    - '49201:9200'
+      - '49301:9300'
+    environment:
+      ELASTIC_PASSWORD: admin@2020
+      discovery.type: single-node
+    depends_on:
+      - es_search
+      - kb_search
+
+  kb_logs:
+    build:
+      context: kb_logs/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./kb_logs/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - '45602:5601'
+    depends_on:
+      - es_logs
+
+networks:
+  default:
+    external:
+      name: saasbot/docker
+
