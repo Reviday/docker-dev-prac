@@ -16,7 +16,7 @@ services:
         target: /usr/share/elasticsearch/config/jvm.options
         read_only: true
       - type: bind
-        source: /volume/search/data
+        source: $SEARCH_VOLUME
         target: /usr/share/elasticsearch/data
     ports:
       - '39201:9200'
@@ -55,10 +55,10 @@ services:
         target: /usr/share/elasticsearch/config/jvm.options
         read_only: true
       - type: bind
-        source: /volume/logs/data
+        source: $LOGS_VOLUME
         target: /usr/share/elasticsearch/data
     ports:
-    - '49201:9200'
+      - '49201:9200'
       - '49301:9300'
     environment:
       ELASTIC_PASSWORD: admin@2020
@@ -86,4 +86,3 @@ networks:
   default:
     external:
       name: saasbot/docker
-
