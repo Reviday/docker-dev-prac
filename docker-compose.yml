@@ -24,6 +24,12 @@ services:
     environment:
       ELASTIC_PASSWORD: admin@2020
       discovery.type: single-node
+    restart: always
+    privileged: true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
 
   kb_search:
     build:
@@ -37,6 +43,8 @@ services:
         read_only: true
     ports:
       - '35602:5601'
+    restart: always
+    privileged: true
     depends_on:
       - es_search
 
@@ -63,9 +71,16 @@ services:
     environment:
       ELASTIC_PASSWORD: admin@2020
       discovery.type: single-node
+    restart: always
+    privileged: true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     depends_on:
       - es_search
       - kb_search
+      
 
   kb_logs:
     build:
@@ -79,8 +94,23 @@ services:
         read_only: true
     ports:
       - '45602:5601'
+    restart: always
+    privileged: true
     depends_on:
       - es_logs
+
+  redis_api:
+    build:
+      context: redis_api/
+      args:
+        REDIS_VERSION: $REDIS_VERSION
+    volumes:
+      - type: bind
+        source: ./redis_api/config/redis.conf
+        target: /usr/local/etc/redis/redis.conf
+        read_only: true
+    ports:
+      - '36379:6379'
 
 networks:
   default:

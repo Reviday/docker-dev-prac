@@ -1,6 +1,8 @@
 cluster.name: "es-search-docker-vt"
 network.host: 0.0.0.0
 
+bootstrap.memory_lock: true
+
 xpack.license.self_generated.type: trial
 xpack.security.enabled: true
 xpack.monitoring.collection.enabled: true
