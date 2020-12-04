@@ -35,3 +35,28 @@ $ chmod 777 볼륨을 연결할 디렉터리
 $ chgrp 1000 볼륨을 연결할 디렉터리
 ```
 
+
+
+
+
+## Error History
+
+1. **Read timed out**
+
+```
+ERROR: for docker-dev-prac_es_logs_1  UnixHTTPConnectionPool(host='localhost', port=None): Read timed out. (read timeout=70)
+ERROR: An HTTP request took too long to complete. Retry with --verbose to obtain debug information.
+```
+
+- **Solution**(근본적인 해결방법은 아닙니다.)
+
+  ```
+  # Restarting docker service:
+  $ sudo systemctl restart docker
+  
+  # and setting DOCKER_CLIENT_TIMEOUT and COMPOSE_HTTP_TIMEOUT environment variables:
+  $ export DOCKER_CLIENT_TIMEOUT=120
+  $ export COMPOSE_HTTP_TIMEOUT=120
+  ```
+
+  

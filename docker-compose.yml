@@ -16,15 +16,18 @@ services:
         target: /usr/share/elasticsearch/config/jvm.options
         read_only: true
       - type: bind
-        source: $SEARCH_VOLUME
+        source: $SEARCH_DATA_VOLUME
         target: /usr/share/elasticsearch/data
+      - type: bind
+        source: $SEARCH_LOG_VOLUME
+        target: /usr/share/elasticsearch/logs
     ports:
       - '39201:9200'
       - '39301:9300'
     environment:
       ELASTIC_PASSWORD: admin@2020
       discovery.type: single-node
-    restart: always
+    # restart: always
     privileged: true
     ulimits:
       memlock:
@@ -43,7 +46,7 @@ services:
         read_only: true
     ports:
       - '35602:5601'
-    restart: always
+    # restart: always
     privileged: true
     depends_on:
       - es_search
@@ -63,24 +66,23 @@ services:
         target: /usr/share/elasticsearch/config/jvm.options
         read_only: true
       - type: bind
-        source: $LOGS_VOLUME
+        source: $LOGS_DATA_VOLUME
         target: /usr/share/elasticsearch/data
+      - type: bind
+        source: $LOGS_LOG_VOLUME
+        target: /usr/share/elasticsearch/logs
     ports:
       - '49201:9200'
       - '49301:9300'
     environment:
       ELASTIC_PASSWORD: admin@2020
       discovery.type: single-node
-    restart: always
+    # restart: always
     privileged: true
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    depends_on:
-      - es_search
-      - kb_search
-      
 
   kb_logs:
     build:
@@ -94,7 +96,7 @@ services:
         read_only: true
     ports:
       - '45602:5601'
-    restart: always
+    # restart: always
     privileged: true
     depends_on:
       - es_logs
