@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.8'
 
 services:
   es_search:
@@ -6,6 +6,14 @@ services:
       context: es_search/
       args:
         ELK_VERSION: $ELK_VERSION
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 4096M
+        reservations:
+          cpus: '1.00'
+          memory: 1024M
     volumes:
       - type: bind
         source: ./es_search/config/elasticsearch.yml
@@ -27,7 +35,7 @@ services:
     environment:
       ELASTIC_PASSWORD: admin@2020
       discovery.type: single-node
-    # restart: always
+    restart: always
     privileged: true
     ulimits:
       memlock:
@@ -39,6 +47,14 @@ services:
       context: kb_search/
       args:
         ELK_VERSION: $ELK_VERSION
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 500M
     volumes:
       - type: bind
         source: ./kb_search/config/kibana.yml
@@ -46,7 +62,7 @@ services:
         read_only: true
     ports:
       - '35602:5601'
-    # restart: always
+    restart: always
     privileged: true
     depends_on:
       - es_search
@@ -56,6 +72,14 @@ services:
       context: es_logs/
       args:
         ELK_VERSION: $ELK_VERSION
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 4096M
+        reservations:
+          cpus: '1.00'
+          memory: 1024M
     volumes:
       - type: bind
         source: ./es_logs/config/elasticsearch.yml
@@ -77,7 +101,7 @@ services:
     environment:
       ELASTIC_PASSWORD: admin@2020
       discovery.type: single-node
-    # restart: always
+    restart: always
     privileged: true
     ulimits:
       memlock:
@@ -89,6 +113,14 @@ services:
       context: kb_logs/
       args:
         ELK_VERSION: $ELK_VERSION
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 500M
     volumes:
       - type: bind
         source: ./kb_logs/config/kibana.yml
@@ -96,7 +128,7 @@ services:
         read_only: true
     ports:
       - '45602:5601'
-    # restart: always
+    restart: always
     privileged: true
     depends_on:
       - es_logs
@@ -106,6 +138,14 @@ services:
       context: redis_api/
       args:
         REDIS_VERSION: $REDIS_VERSION
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
+        reservations:
+          cpus: '0.25'
+          memory: 25M
     volumes:
       - type: bind
         source: ./redis_api/config/redis.conf

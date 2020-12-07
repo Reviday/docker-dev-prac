@@ -59,4 +59,28 @@ ERROR: An HTTP request took too long to complete. Retry with --verbose to obtain
   $ export COMPOSE_HTTP_TIMEOUT=120
   ```
 
+
+
+2. **Docker Container exited with code 137**
+
+```
+container_name exited with code 137
+```
+
+- **Solution**
+
+  : 주로 할당 된 Memory 부족으로 발생되는 에러로, 아래와 같이 docker-compose.yml에 적절히 할당해 주면 해결됩니다.
+
+  ```yaml
+  deploy:
+  	resources:
+    	limits:
+      	cpus: '2.00'
+        memory: 4096M
+      reservations:
+      	cpus: '1.00'
+        memory: 1024M
+  ```
+
   
+
